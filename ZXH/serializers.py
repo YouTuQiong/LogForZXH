@@ -6,7 +6,7 @@ from ZXH.models import *
 
 
 class LogSerializer(serializers.ModelSerializer):
-    # owner = serializers.ReadOnlyField(source='owner.username')  # 只读
+    owner = serializers.ReadOnlyField(source='owner.username')  # 只读
 
     class Meta:
         model = Log
@@ -24,6 +24,15 @@ class LogSerializer(serializers.ModelSerializer):
                   'tags',
                   'isShow',
                  )
+
+    def update(self, instance, validated_data):
+
+        instance.title =  validated_data.get('title', instance.title)
+        instance.save()
+
+        return instance
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         exclude = []
